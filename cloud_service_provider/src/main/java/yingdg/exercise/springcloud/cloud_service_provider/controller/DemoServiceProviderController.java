@@ -1,5 +1,7 @@
 package yingdg.exercise.springcloud.cloud_service_provider.controller;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 public class DemoServiceProviderController {
+    private static final Logger LOG = Logger.getLogger(DemoServiceProviderController.class);
     @Value("${server.port}")
     private String port;
 
@@ -25,6 +28,12 @@ public class DemoServiceProviderController {
     @GetMapping("/hi2")
     public String index(@RequestParam String name) {
         return "hi, you input " + name + " from port" + port;
+    }
+
+    @RequestMapping("/hi3")
+    public String info() {
+        LOG.log(Level.INFO, "calling trace service-hi ");
+        return "i'm service-hi";
     }
 
 }

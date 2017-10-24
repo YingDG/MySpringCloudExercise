@@ -9,3 +9,5 @@ Eureka服务调用
 Hystrix断路器
 
 Zuul路由过滤器
+
+Config-Server分布式配置
