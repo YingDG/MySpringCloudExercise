@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by yingdg on 2017/10/23.
+ * 注册接口
  */
 @RestController
 public class DemoServiceProviderController {
@@ -30,7 +31,7 @@ public class DemoServiceProviderController {
         return "hi, you input " + name + " from port" + port;
     }
 
-    @RequestMapping("/hi3")
+    @RequestMapping(value = "/hi3", method = RequestMethod.GET)
     public String info() {
         LOG.log(Level.INFO, "calling trace service-hi ");
         return "i'm service-hi";

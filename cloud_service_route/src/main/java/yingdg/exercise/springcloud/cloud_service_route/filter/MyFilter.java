@@ -4,6 +4,9 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class MyFilter extends ZuulFilter {
     private final Logger log = LoggerFactory.getLogger(MyFilter.class);
+    @Autowired
+    private Tracer tracer;
 
     /*
     返回一个字符串代表过滤器的类型，在zuul中定义了四种不同生命周期的过滤器类型
@@ -24,7 +29,7 @@ public class MyFilter extends ZuulFilter {
      */
     @Override
     public String filterType() {
-        return "pre";
+        return FilterConstants.PRE_TYPE;
     }
 
     /*
@@ -32,7 +37,7 @@ public class MyFilter extends ZuulFilter {
      */
     @Override
     public int filterOrder() {
-        return 0;
+        return 0; // FilterConstants.SEND_ERROR_FILTER_ORDER
     }
 
     /*
@@ -48,6 +53,9 @@ public class MyFilter extends ZuulFilter {
      */
     @Override
     public Object run() {
+        tracer.addTag("operator","forezp");
+        System.out.print(tracer.getCurrentSpan().traceIdString());
+
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
         log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
